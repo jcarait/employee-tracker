@@ -3,26 +3,20 @@ const db = require("./config/connection")
 const cTable = require("console.table");
 
 
-const genMenu = () => {
-    return inquirer.prompt([
+const genMenu = () => 
+    [
         {
         type: "list",
         name: "main",
         message: "What do you want to do?",
-        choices: ["View All Employees", "Add Employee"]
-        }
-    ])
-}
+        choices: [
+                'View All Employees', 'Add Employee', "Update Employee Role",
+                "View All Roles", "Add Role", "View All Departments",
+                "Add Department","Quit"
+                ]
+    }
+    ];
 
-genMenu();
-
-//Asynchronous version
-
-init();
-
-async function init() {
-    await main()
-}
 
 async function main() {
     console.log(`
@@ -42,17 +36,11 @@ async function main() {
     |______| |__| |__|  |___|  |__| |__||_______||__| |__||_______||_______|     
     `)
 
-    await inquirer.prompt([
-        {
-        type: "list",
-        name: "main",
-        message: "What do you want to do?",
-        choices: ['View All Employees', 'Add Employee'],
-        }
-       
-    ])
+    await inquirer.prompt(genMenu())
+    
 }
 
+main();
 // "View All Employees", "Add Employee", "Update Employee Role",
 //             "View All Roles", "Add Role", "View All Departments",
 //             "Add Department","Quit
