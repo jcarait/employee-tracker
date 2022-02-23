@@ -1,27 +1,28 @@
 const inquirer = require("inquirer");
 const db = require("./config/connection")
-const cTable = require('console.table');
+const cTable = require("console.table");
 
-//Generate menu with list for inquirer
-// const genMenu =  [{
-//         type: "list",
-//         name: "menu",
-//         message: "What do you want to do?",
-//         choices: ["View All Employees", "Add Employee", "Update Employee Role", 
-//         "View All Roles", "Add Role", "View All Departments", 
-//         "Add Department", "Quit"]
-//     }];
 
-const returnMenuChoice = () => {
-    return Promise.resolve((input) => {
-        if (input === quit) {
-            return inquirer.prompt.quit()
-        };
-    })
-
+const genMenu = () => {
+    return inquirer.prompt([
+        {
+        type: "list",
+        name: "main",
+        message: "What do you want to do?",
+        choices: ["View All Employees", "Add Employee"]
+        }
+    ])
 }
 
+genMenu();
 
+//Asynchronous version
+
+init();
+
+async function init() {
+    await main()
+}
 
 async function main() {
     console.log(`
@@ -41,15 +42,17 @@ async function main() {
     |______| |__| |__|  |___|  |__| |__||_______||__| |__||_______||_______|     
     `)
 
-    const getMenu = await inquirer.prompt([{
+    await inquirer.prompt([
+        {
         type: "list",
-        name: "menu",
+        name: "main",
         message: "What do you want to do?",
-        choices: ["View All Employees", "Add Employee", "Update Employee Role",
-            "View All Roles", "Add Role", "View All Departments",
-            "Add Department", "Quit"]
-    }])
-    const getChoice = await inquirer.prompt(returnMenuChoice());
+        choices: ['View All Employees', 'Add Employee'],
+        }
+       
+    ])
 }
 
-main();
+// "View All Employees", "Add Employee", "Update Employee Role",
+//             "View All Roles", "Add Role", "View All Departments",
+//             "Add Department","Quit
