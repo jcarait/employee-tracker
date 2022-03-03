@@ -1,5 +1,5 @@
 INSERT INTO department (name)
-VALUES 
+VALUES
 ('IT'),
 ('Finance & Accounting'),
 ('Sales & Marketing'),
@@ -18,12 +18,12 @@ VALUES
 
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES 
-('Hatori', 'Hanzo', 1, 1),
-('Ayodeji', 'Balogun', 2, null),
+VALUES
+('Hatori', 'Hanzo', 1, null),
+('Ayodeji', 'Balogun', 2, 1),
 ('Varys', 'Lys', 4, null),
-('Warren', 'Gates', 3, 2),
-('Mike', 'Ross', 6, null),
-('Harvey', 'Spectre', 5, 3),
-('Mark', 'Anthony', 7, null),
-('Julius', 'Caesar', 8, 4);
+('Warren', 'Gates', 3, 3),
+('Harvey', 'Spectre', 5, null),
+('Mike', 'Ross', 6, 5),
+('Julius', 'Caesar', 8, null),
+('Mark', 'Anthony', 7, 7);

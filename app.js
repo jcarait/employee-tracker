@@ -26,15 +26,15 @@ const promptUser = () => {
         const { choices } = answers; 
   
         if (choices === "View all departments") {
-          showDepartments();
+          viewDepartments();
         };
   
         if (choices === "View all roles") {
-          showRoles();
+          viewRoles();
         };
   
         if (choices === "View all employees") {
-          showEmployees();
+          viewEmployees();
         };
   
         if (choices === "Add a department") {
@@ -96,7 +96,7 @@ const displayTable = (sql) => {
     });
 }
 
-const showDepartments = () => {
+const viewDepartments = () => {
     console.log("Viewing All Departments...\n");
 
     const sql = `SELECT department.id AS id, department.name AS department FROM department`;
@@ -104,13 +104,33 @@ const showDepartments = () => {
     displayTable(sql);
 };
 
-const showRoles = () => {
+const viewRoles = () => {
     console.log("Viewing All Roles...\n");
 
     const sql = `SELECT role.id AS id, role.title, department.name AS department FROM role INNER JOIN department ON role.department_id = department.id`;
 
     displayTable(sql);
 };
+
+const viewEmployees = () => {
+    console.log("Viewing All Employees...\n");
+
+    const sql = `SELECT employee.id, 
+                employee.first_name, 
+                employee.last_name, 
+                role.title, 
+                department.name AS department,
+                role.salary, 
+                CONCAT (manager.first_name, " ", manager.last_name) AS manager
+                FROM employee
+                LEFT JOIN role ON employee.role_id = role.id
+                LEFT JOIN department ON role.department_id = department.id
+                LEFT JOIN employee manager ON employee.manager_id = manager.id`;
+
+    displayTable(sql);
+}
+
+
 
 
   promptUser();
