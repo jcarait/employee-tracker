@@ -38,7 +38,7 @@ const promptUser = () => {
         viewEmployees();
       };
 
-      if (choices === "Add a department") {
+      if (choices === "Add department") {
         addDepartment();
       };
 
@@ -88,18 +88,7 @@ const promptUser = () => {
 
     });
 
-  const viewDepartments = async () => {
-    console.log("Viewing All Departments...\n");
-
-    const sql = `SELECT department.id AS id, department.name AS department FROM department`;
-
-    db.query(sql, (err, res) => {
-      if (err)
-        console.log(err);
-      console.table(res);
-    });
-    promptUser();
-  };
+ 
 
   const viewRoles = () => {
     console.log("Viewing All Roles...\n");
@@ -108,7 +97,7 @@ const promptUser = () => {
 
     db.query(sql, (err, res) => {
       if (err)
-        console.log(err);
+        console.log(err); 
       console.table(res);
     });
     promptUser();
@@ -136,10 +125,49 @@ const promptUser = () => {
     });
     promptUser();
   }
-
-
-
 };
+
+const viewDepartments = async () => {
+  console.log("Viewing All Departments...\n");
+
+  const sql = `SELECT department.id AS id, department.name AS department FROM department`;
+
+  db.query(sql, (err, res) => {
+    if (err)
+      console.log(err);
+    console.table(res);
+  });
+  promptUser();
+};
+
+const addDepartment = () => {
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "addDept",
+      message: "What department would you like to add?",
+      validate: addDept => {
+        if (addDept) {
+          return true;
+        } else {
+          console.log("Please enter a department");
+          return false
+        }
+      }
+    }
+  ])
+    .then(answer => {
+      const sql = `INSERT INTO department (name)
+        VALUES(?);
+        `
+        db.query(sql, answer.addDept, (err, res) => {
+          if (err) console.log(err);
+          console.log(`Added ${answer.addDept} as a new department!`);
+
+          viewDepartments();
+        });
+    })
+}
 
 promptUser();
 
