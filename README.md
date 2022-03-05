@@ -3,7 +3,7 @@
 
 ## Description
 
-This application uses inquirer to demonstrate the usage of SQL with JavaScript. The purpose of the app is to assist management with tracking employee salaries, departments and roles into one database tracker.
+This application uses inquirer to demonstrate the usage of SQL with NodeJS and mysql2 library. The purpose of the app is to assist management with tracking employee salaries, departments and roles into one database tracker.
 
 ## Table of contents
 
