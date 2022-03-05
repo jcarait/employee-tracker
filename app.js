@@ -138,7 +138,7 @@ const employeeDepartment = () => {
                LEFT JOIN role ON employee.role_id = role.id 
                LEFT JOIN department ON role.department_id = department.id`;
 
-  db.promise().query(sql, (err, rows) => {
+  db.query(sql, (err, rows) => {
     if (err) throw err;
     console.table(rows);
     promptUser();
