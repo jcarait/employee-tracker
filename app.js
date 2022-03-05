@@ -60,10 +60,6 @@ const promptUser = () => {
         employeeDepartment();
       };
 
-      if (choices === "View employees by Manager") {
-        employeeManager();
-      };
-
       if (choices === "Delete a department") {
         deleteDepartment();
       };
@@ -96,11 +92,11 @@ const viewRoles = () => {
   db.query(sql, (err, res) => {
     if (err) throw err;
     console.table(res);
+    promptUser();
   });
-  promptUser();
 };
 
-const viewEmployees = () => {
+const viewEmployees = async () => {
 
   const sql = `SELECT employee.id, 
                   employee.first_name, 
@@ -116,9 +112,11 @@ const viewEmployees = () => {
 
   db.query(sql, (err, res) => {
     if (err) throw err;
-    console.table(res);
+      console.table(res);
+      promptUser();
   });
-  promptUser();
+  
+  
 };
 
 const viewDepartments = () => {
@@ -128,8 +126,8 @@ const viewDepartments = () => {
   db.query(sql, (err, res) => {
     if (err) throw err;
     console.table(res);
+    promptUser();
   });
-  promptUser();
 };
 
 const employeeDepartment = () => {
@@ -157,7 +155,6 @@ iewBudget = () => {
   db.query(sql, (err, rows) => {
     if (err) throw err; 
     console.table(rows);
-
     promptUser(); 
   });            
 };
