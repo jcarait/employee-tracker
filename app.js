@@ -1,7 +1,5 @@
 const inquirer = require("inquirer");
-
 const db = require("./config/connection")
-// import library to display tables on console
 const cTable = require("console.table");
 
 
@@ -15,7 +13,7 @@ const promptUser = () => {
       choices: ["View all departments", "View all roles", "View all employees", "View employees by department",
         "Add department", "Add role", "Add employee",
         "Update employee role", "Update employee manager",
-        "Delete a department", "Delete a role", "Delete employee",
+        "Delete a department", "Delete a role", "Delete an employee",
         "View employees by Manager", "View department budgets",
         "Exit"]
     }
@@ -92,20 +90,17 @@ const promptUser = () => {
 // ======= inquirer view functions ============
 
 const viewRoles = () => {
-  console.log("Viewing All Roles...\n");
 
   const sql = `SELECT role.id AS id, role.title, department.name AS department FROM role INNER JOIN department ON role.department_id = department.id`;
 
   db.query(sql, (err, res) => {
-    if (err)
-      console.log(err);
+    if (err) throw err;
     console.table(res);
   });
   promptUser();
 };
 
 const viewEmployees = () => {
-  console.log("Viewing All Employees...\n");
 
   const sql = `SELECT employee.id, 
                   employee.first_name, 
@@ -120,28 +115,24 @@ const viewEmployees = () => {
                   LEFT JOIN employee manager ON employee.manager_id = manager.id`;
 
   db.query(sql, (err, res) => {
-    if (err)
-      console.log(err);
+    if (err) throw err;
     console.table(res);
   });
   promptUser();
 };
 
 const viewDepartments = () => {
-  console.log("Viewing All Departments...\n");
 
   const sql = `SELECT department.id AS id, department.name AS department FROM department`;
 
   db.query(sql, (err, res) => {
-    if (err)
-      console.log(err);
+    if (err) throw err;
     console.table(res);
   });
   promptUser();
 };
 
 const employeeDepartment = () => {
-  console.log('Showing employee by departments...\n');
   const sql = `SELECT employee.first_name, 
                       employee.last_name, 
                       department.name AS department
@@ -154,6 +145,21 @@ const employeeDepartment = () => {
     console.table(rows);
     promptUser();
   });
+};
+
+iewBudget = () => {
+  const sql = `SELECT department_id AS id, 
+                      department.name AS department,
+                      SUM(salary) AS budget
+               FROM  role  
+               JOIN department ON role.department_id = department.id GROUP BY  department_id`;
+  
+  db.query(sql, (err, rows) => {
+    if (err) throw err; 
+    console.table(rows);
+
+    promptUser(); 
+  });            
 };
 
 // ======= inquirer add functions ============
@@ -179,7 +185,7 @@ const addDepartment = () => {
         VALUES(?);
         `
       db.query(sql, answer.addDept, (err, res) => {
-        if (err) console.log(err);
+        if (err) throw(err);
         console.log(`Added ${answer.addDept} as a new department!`);
 
         viewDepartments();
@@ -405,7 +411,7 @@ const updateEmployee = () => {
 const updateManager = () => {
   const employeeDB = `SELECT * FROM employee`;
 
-  connection.query(employeeDB, (err, data) => {
+  db.query(employeeDB, (err, data) => {
     if (err) throw err;
 
     const employees = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
@@ -512,7 +518,7 @@ const deleteRole = () => {
         const role = roleChoice.role;
         const sql = `DELETE FROM role WHERE id = ?`;
 
-        connection.query(sql, role, (err, res) => {
+        db.query(sql, role, (err, res) => {
           if (err) throw err;
           console.log("Successfully deleted!");
 
@@ -522,9 +528,7 @@ const deleteRole = () => {
   });
 };
 
-// function to delete employees
-deleteEmployee = () => {
-  // get employees from employee table 
+deleteEmployee = () => { 
   const employeeDB = `SELECT * FROM employee`;
 
   db.query(employeeDB, (err, data) => {
